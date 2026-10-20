@@ -1,0 +1,13 @@
+{
+  "name": "mindmap-mcp",
+  "version": "1.0.0",
+  "description": "MCP server that generates editable tree/mind-map diagrams served on 3-day-expiring URLs.",
+  "license": "MIT",
+  "bin": {
+    "mindmap-mcp": "server.js"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {}
+}

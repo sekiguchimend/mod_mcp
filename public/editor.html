@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Mind Map</title>
+<link rel="stylesheet" href="/editor.css" />
+</head>
+<body>
+  <div id="stage">
+    <svg id="links" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="nodes"></div>
+  </div>
+
+  <div id="toolbar">
+    <span id="title" title="クリックで名前を変更"></span>
+    <button id="fit" title="全体を画面に合わせる (F)">⤢ フィット</button>
+    <span id="expiry" class="muted"></span>
+    <span id="save-state" class="muted"></span>
+  </div>
+
+  <div id="hint" class="muted">
+    ダブルクリック: 編集 ・ Tab: 子を追加 ・ Enter: 兄弟を追加 ・ Delete: 削除 ・ ○: 開閉 ・ ドラッグ: 移動 ・ ホイール: 拡大縮小
+  </div>
+
+  <div id="overlay" class="hidden">
+    <div id="overlay-box">
+      <div id="overlay-title">リンクが無効です</div>
+      <div id="overlay-msg" class="muted">この樹形図は存在しないか、3日間の有効期限が切れました。</div>
+    </div>
+  </div>
+
+  <script src="/editor.js"></script>
+</body>
+</html>
