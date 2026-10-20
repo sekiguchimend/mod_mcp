@@ -36,8 +36,8 @@ node server.js
 
 起動すると以下が同じプロセスで立ち上がります。
 
-- **MCPエンドポイント**: `http://localhost:4387/mcp`
-- **編集画面**: `http://localhost:4387/e/<token>`
+- **MCPエンドポイント**: `http://localhost:8080/mcp`
+- **編集画面**: `http://localhost:8080/e/<token>`
 
 > 3日URLはこのサーバが起動している間だけ有効です。常駐させるなら `pm2 start server.js --name mindmap-mcp` などでデーモン化してください。
 
@@ -46,7 +46,7 @@ node server.js
 Claude Code:
 
 ```bash
-claude mcp add --transport http mindmap http://localhost:4387/mcp
+claude mcp add --transport http mindmap http://localhost:8080/mcp
 ```
 
 Claude Desktop など（設定ファイル）:
@@ -56,7 +56,7 @@ Claude Desktop など（設定ファイル）:
   "mcpServers": {
     "mindmap": {
       "type": "http",
-      "url": "http://localhost:4387/mcp"
+      "url": "http://localhost:8080/mcp"
     }
   }
 }
@@ -120,11 +120,17 @@ Claude Desktop など（設定ファイル）:
 
 ## ⚙️ 環境変数
 
+すべて任意です（未設定でもそのまま起動します）。
+
 | 変数 | 既定値 | 説明 |
 |---|---|---|
-| `MINDMAP_PORT` | `4387` | HTTPサーバのポート |
-| `MINDMAP_BASE_URL` | `http://localhost:<PORT>` | 返すURLのベース。外部公開時はここを公開ドメインに |
-| `MINDMAP_DATA_DIR` | `./data` | 図の保存先 |
+| `PORT` / `MCP_HTTP_PORT` | `8080` | 待ち受けポート。多くのホスティングが自動注入します |
+| `HOST` / `MCP_HTTP_HOST` | `0.0.0.0` | 待ち受けホスト。全インターフェースで待ち受け |
+| `MINDMAP_BASE_URL` | `http://localhost:<PORT>` | 返すURLのベース。**外部公開時はここを公開URLに**（でないと発行URLが `localhost` のままになる） |
+| `MINDMAP_DATA_DIR` | `./data` | 図の保存先。使い捨てVMでは永続ボリュームを指定 |
+
+> ポート/ホストの優先順位: `PORT` → `MCP_HTTP_PORT` → `MINDMAP_PORT` → `8080`、`HOST` → `MCP_HTTP_HOST` → `MINDMAP_HOST` → `0.0.0.0`。
+> プラットフォームが `PORT`/`MCP_HTTP_PORT` を注入する環境では、何も設定しなくても正しく `0.0.0.0:8080` で待ち受けます。
 
 ---
 

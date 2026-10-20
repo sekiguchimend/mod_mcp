@@ -22,7 +22,14 @@ const crypto = require("crypto");
 const { URL } = require("url");
 
 // ---- configuration ----------------------------------------------------------
-const PORT = parseInt(process.env.MINDMAP_PORT || "4387", 10);
+// Hosting platforms inject the listen port via PORT / MCP_HTTP_PORT (commonly
+// 8080) and expect the process to bind 0.0.0.0. Honour those first, then our
+// own MINDMAP_* overrides, then sensible defaults.
+const PORT = parseInt(
+  process.env.PORT || process.env.MCP_HTTP_PORT || process.env.MINDMAP_PORT || "8080",
+  10
+);
+const HOST = process.env.HOST || process.env.MCP_HTTP_HOST || process.env.MINDMAP_HOST || "0.0.0.0";
 const BASE_URL = (process.env.MINDMAP_BASE_URL || `http://localhost:${PORT}`).replace(/\/+$/, "");
 const DATA_DIR = process.env.MINDMAP_DATA_DIR || path.join(__dirname, "data");
 const PUBLIC_DIR = path.join(__dirname, "public");
@@ -233,8 +240,8 @@ let httpServer = null;
 function startHttp() {
   if (httpServer) return;
   httpServer = http.createServer(handleHttp);
-  httpServer.listen(PORT, () => {
-    log(`HTTP server listening on ${BASE_URL}`);
+  httpServer.listen(PORT, HOST, () => {
+    log(`HTTP server listening on ${HOST}:${PORT} (links use ${BASE_URL})`);
   });
   httpServer.on("error", (err) => {
     if (err.code === "EADDRINUSE") {
